@@ -1,3 +1,41 @@
+struct Name{
+    fname : String,
+    lname : String
+}
+trait Hello{
+    fn hello(&self)->String;
+}
+impl Hello for Name{
+    fn hello(&self)->String{
+        return format!("hello : {} {}",self.fname, self.lname);
+    }
+}
+
+struct A{
+    val : u32
+}
+struct B{
+    val : u32
+}
+impl Clone for A{
+    fn clone(&self)->A{*self}
+}
+impl Copy for A{}
+
+struct AA{
+    name : u32
+}
+impl Drop for AA{
+    fn drop(&mut self){
+        println!("{} dies", self.name);
+    }
+}
+
+fn answer(x :  &mut Box<u32>)
+{
+    **x = 42
+}
+
 fn main() {
     println!("Hello");
     // comment
@@ -66,6 +104,30 @@ fn main() {
     // impl Drop for A{
     //    fn drop (self: & mut A){freeing stuff}
     // }
+    // structure, trait and impl
+    let A : Name = Name{fname : "James".to_string(), lname : "Bond".to_string()};
+    println!("{}",A.hello());
+    
+    // move and copy semantics
+    let xa : A = A{val : 11};
+    let xb : B = B{val : 11};
+    let ya = xa;
+    let yb = xb;
+    // printing xb will give error as move semantics other are fine
+    
+    // drop semantics
+    let x = AA{name : 10};
+        {
+            let y = x;
+            println!("y is {}", y.name);
+        }
+    println!("out of brace");
+    
+    // features
+    let mut something : Box<u32> = Box::new(50);
+    answer(&mut something);
+    println!("something = {}",something);
+
 }
 
 fn foo(u : Box<u32>){
